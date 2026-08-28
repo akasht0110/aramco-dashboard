@@ -1,0 +1,15 @@
+# Local database
+aramco.db
+*.db-journal
+
+# Secrets — never commit
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local Excel copies (data entry files live on the shared drive)
+*.xlsx

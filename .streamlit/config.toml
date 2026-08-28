@@ -1,0 +1,7 @@
+[theme]
+primaryColor = "#0072C6"
+base = "light"
+
+[server]
+# Uploaded workbooks can be large; allow up to 500 MB.
+maxUploadSize = 500
