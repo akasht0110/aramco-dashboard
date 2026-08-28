@@ -1,10 +1,10 @@
-# Pure-Python packages are pinned exactly (safe on any Python version).
-# Packages with compiled wheels (pandas/numpy/psycopg2) are given ranges so
-# pip can pick a build that has wheels for the host's Python version.
-streamlit==1.46.1
+# Floors only. Streamlit Community Cloud runs Python 3.14, which only has
+# prebuilt wheels for the newest pandas/numpy/psycopg2 — pinning older exact
+# versions forces a source build that fails. Let pip take the newest.
+streamlit>=1.46
 streamlit-authenticator==0.4.2
-plotly==6.2.0
-SQLAlchemy==2.0.46
-openpyxl==3.1.5
-pandas>=2.2,<3
+pandas>=2.2
+plotly>=5.24
+SQLAlchemy>=2.0
 psycopg2-binary>=2.9.9
+openpyxl>=3.1
