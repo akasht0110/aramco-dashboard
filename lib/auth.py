@@ -15,7 +15,7 @@ from __future__ import annotations
 import streamlit as st
 import streamlit_authenticator as stauth
 
-from lib.config import admin_users, cookie_config, credentials
+from lib.config import admin_users, config_problem, cookie_config, credentials
 
 
 def get_authenticator() -> stauth.Authenticate:
@@ -46,6 +46,11 @@ def require_login() -> dict:
     Render the login form and stop the script unless the user is authenticated.
     Returns the `current_user()` dict plus the authenticator instance.
     """
+    problem = config_problem()
+    if problem:
+        st.error(f"Login is not configured correctly.\n\n{problem}")
+        st.stop()
+
     authenticator = get_authenticator()
     authenticator.login(location="main")
 

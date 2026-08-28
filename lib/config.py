@@ -78,11 +78,33 @@ def credentials() -> dict:
     """
     sec = _secrets()
     try:
-        creds = sec["auth"]["credentials"]
-        # st.secrets returns an AttrDict; convert to plain dict recursively.
-        return _to_plain(creds)
+        auth = sec["auth"]
     except Exception:
         return {"usernames": {}}
+    if "credentials" not in auth:
+        return {"usernames": {}}
+    # st.secrets returns an AttrDict; convert to plain dict recursively.
+    return _to_plain(auth["credentials"])
+
+
+def config_problem() -> str | None:
+    """
+    Returns a human-readable reason the auth config is unusable, or None if OK.
+    Used to show a clear message instead of silently rejecting every login.
+    """
+    if not _secrets():
+        return "No secrets found. Add the [auth] block in the app's Settings → Secrets."
+    creds = credentials()
+    users = creds.get("usernames") or {}
+    if not users:
+        return (
+            "Auth config is missing or malformed: no accounts found under "
+            "[auth.credentials.usernames] in the app secrets."
+        )
+    missing = [u for u, v in users.items() if not (v or {}).get("password")]
+    if missing:
+        return f"These accounts have no password hash in secrets: {', '.join(missing)}."
+    return None
 
 
 def _to_plain(obj: Any) -> Any:
